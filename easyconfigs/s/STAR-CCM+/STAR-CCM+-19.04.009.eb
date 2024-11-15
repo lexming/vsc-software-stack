@@ -1,0 +1,16 @@
+name = 'STAR-CCM+'
+version = '19.04.009'
+
+homepage = 'https://mdx.plm.automation.siemens.com/star-ccm-plus'
+description = """STAR-CCM+ is a multiphysics computational fluid dynamics (CFD) software for the simulation of products
+operating under real-world conditions."""
+
+toolchain = SYSTEM
+
+download_instructions = 'Manually obtain tarball from Siemens'
+sources = ['%(name)s%(version)s_01_linux-x86_64.tar.gz']
+checksums = ['dd07e8e29e501056e81b4ab330b296b660441a2c3f2d2378597e711917f26393']
+
+group = "vsc10001"
+
+moduleclass = 'cae'
