@@ -1,0 +1,21 @@
+diff -ur paleoEarth_GCM.orig/arch/Config_new.pl paleoEarth_GCM/arch/Config_new.pl
+--- paleoEarth_GCM.orig/arch/Config_new.pl	2024-11-25 19:27:31.088567000 +0100
++++ paleoEarth_GCM/arch/Config_new.pl	2024-11-28 11:19:58.097459792 +0100
+@@ -341,7 +341,7 @@
+   $opt -- ;
+ 
+   printf "\nEnter selection [%d-%d] : ",1,$opt ;
+-  $response = <STDIN> ;
++  $response = 25 ; # 25.  x86_64 Linux, gfortran compiler with gcc   (dmpar)
+ 
+   if ( $response == -1 ) { exit ; }
+ 
+@@ -551,7 +551,7 @@
+              printf "HWRF requires moving nests";
+              $response = "2\n";
+           } else {
+-             $response = <STDIN> ;
++             $response = 1 ;
+           } 
+           printf "\n" ;
+           lc $response ;

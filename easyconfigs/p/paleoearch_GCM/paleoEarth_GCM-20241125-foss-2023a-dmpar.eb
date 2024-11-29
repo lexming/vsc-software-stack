@@ -1,0 +1,87 @@
+easyblock = 'ConfigureMake'
+
+name = 'paleoEarth_GCM'
+version = '20241125'
+versionsuffix = '-dmpar'
+
+homepage = ''
+description = "In-house version of the planetWRF model"
+
+toolchain = {'name': 'foss', 'version': '2023a'}
+toolchainopts = {'opt': False}  # don't use agressive optimization, stick to -O2
+
+sources = [SOURCE_TAR_GZ]
+patches = [
+    '%(name)s-%(version)s_no_interactive.patch',
+    '%(name)s-%(version)s_netCDF-Fortran_separate_path.patch',
+]
+checksums = [
+    {'paleoEarth_GCM-20241125.tar.gz': '8aee09e41fd8ea21018bd43d44b1956b939df7a206f67995a13c236e1873ac86'},
+    {'paleoEarth_GCM-20241125_no_interactive.patch':
+     '85112177b5c1bbbe9cffda80f0a0c0d9b109f4cef1f2d45ab4f86dc35cab3607'},
+    {'paleoEarth_GCM-20241125_netCDF-Fortran_separate_path.patch':
+     '6c4b93bf0d831037685b65b919758a84da9b6b9b6485a5c9ec08cc7c31551eb1'},
+]
+
+# csh is used by WRF install scripts
+builddependencies = [
+    ('Autotools', '20220317'),
+    ('tcsh', '6.24.10'),
+    ('time', '1.9'),
+    ('Perl', '5.36.1'),
+]
+
+dependencies = [
+    # ('JasPer', '4.0.0'),
+    ('netCDF', '4.9.2'),
+    ('netCDF-Fortran', '4.6.1'),
+    ('libpng', '1.6.39'),
+]
+
+unpack_options = '--strip-components=1'
+
+buildininstalldir = True
+
+skipsteps = ['install']
+
+preconfigopts = 'export NETCDF=$EBROOTNETCDF && '
+preconfigopts += 'export NETCDFF=$EBROOTNETCDFMINFORTRAN && '
+preconfigopts += 'export HDF5=$EBROOTHDF5 && '
+# preconfigopts += 'export JASPERLIB=$EBROOTJASPER/lib && '
+# preconfigopts += 'export JASPERINC=$EBROOTJASPER/include && '
+preconfigopts += 'export WRFIO_NCD_LARGE_FILE_SUPPORT=1 && '
+preconfigopts += './clean && '
+
+prefix_opt = ''
+
+configopts = 'earth'
+
+prebuildopts = r"""sed -i \
+    -e "s|^SCC\s*=.*|SCC = $CC|g" \
+    -e "s|^SFC\s*=.*|SFC = $F90|g" \
+    -e "s|^CCOMP\s*=.*|CCOMP = $CC|g" \
+    -e "s|^DM_FC\s*=.*|DM_FC = $MPIF90|g" \
+    -e "s|^DM_CC\s*=.*|DM_CC = $MPICC -DMPI2_SUPPORT|g" \
+    -e "s|^FORMAT_FIXED\s*=.*|FORMAT_FIXED = -cpp -ffixed-form|g" \
+    -e "s|^FORMAT_FREE\s*=.*|FORMAT_FREE = -cpp -ffree-form -ffree-line-length-none -fallow-argument-mismatch -fallow-invalid-boz|g" \
+    -e "s|^FCOPTIM\s*=.*|FCOPTIM = $FFLAGS|g" \
+    -e "s|^CFLAGS_LOCAL\s*=.*|CFLAGS_LOCAL = $CFLAGS|g" \
+    -e "s|/lib/cpp|cpp|g" \
+    configure.wrf && """
+
+build_cmd = './compile'
+buildopts = 'wrf'
+
+maxparallel = 20
+
+sanity_check_paths = {
+    'files': ['main/wrf.exe', 'main/libwrflib.a'],
+    'dirs': [],
+}
+
+modextrapaths = {
+    'PATH': 'main',
+    'LD_LIBRARY_PATH': 'main',
+}
+
+moduleclass = 'geo'
