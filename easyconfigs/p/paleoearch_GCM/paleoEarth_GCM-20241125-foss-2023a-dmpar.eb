@@ -4,6 +4,8 @@ name = 'paleoEarth_GCM'
 version = '20241125'
 versionsuffix = '-dmpar'
 
+group = 'bplanetwrf'
+
 homepage = ''
 description = "In-house version of the planetWRF model"
 
