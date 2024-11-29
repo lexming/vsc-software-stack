@@ -72,12 +72,13 @@ prebuildopts = r"""sed -i \
     configure.wrf && """
 
 build_cmd = './compile'
-buildopts = 'wrf'
 
-maxparallel = 20
+buildopts = 'em_global_earth'
+
+maxparallel = 1
 
 sanity_check_paths = {
-    'files': ['main/wrf.exe', 'main/libwrflib.a'],
+    'files': ['main/wrf.exe', 'main/ideal.exe', 'main/libwrflib.a'],
     'dirs': [],
 }
 
