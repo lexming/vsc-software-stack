@@ -1,17 +1,17 @@
 # Template for simple ConfigureMake package in GCCcore 11.3.0 
 easyblock = 'ConfigureMake'
 
-name =
-version =
+name = 'SoftwareName'
+version = '0.0.0'
 
-homepage =
+homepage = 'https://www.domain.org'
 description = """
 Description in 80 chars long column
 """
 
 toolchain = {'name': 'GCCcore', 'version': '11.3.0'}
 
-source_urls = ['http://www.domain.org/download/']
+source_urls = ['https://www.domain.org/download/']
 sources = [SOURCELOWER_TAR_GZ]
 checksums = ['0000000000000000000000000000000000000000000000000000000000000000']
 
@@ -21,7 +21,7 @@ builddependencies = [
 ]
 
 dependencies = [
-    ('zlib', '1.2.12'),
+    ('DependencyName', '0.0.0'),
 ]
 
 sanity_check_paths = {
