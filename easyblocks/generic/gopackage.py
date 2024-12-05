@@ -38,7 +38,7 @@ from easybuild.tools.build_log import EasyBuildError, print_warning
 from easybuild.tools.config import build_option
 from easybuild.tools.modules import get_software_root, get_software_version
 from easybuild.tools.systemtools import AARCH32, AARCH64, X86_64, get_cpu_architecture
-from easybuild.tools.run import run_shell_cmd
+from easybuild.tools.run import run_cmd
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 
 
@@ -158,8 +158,8 @@ class GoPackage(EasyBlock):
             env.setvar(*microarch, verbose=False)
 
         # creates log entries for go being used, for debugging
-        run_shell_cmd("go version", hidden=True)
-        run_shell_cmd("go env", hidden=True)
+        run_cmd("go version", verbose=False, trace=False)
+        run_cmd("go env", verbose=False, trace=False)
 
     def build_step(self):
         """If Go package is not native go module, lets try to make the module."""
@@ -178,13 +178,13 @@ class GoPackage(EasyBlock):
 
             # go mod init
             cmd = ' '.join(['go', 'mod', 'init', self.cfg['modulename']])
-            run_shell_cmd(cmd)
+            run_cmd(cmd, log_all=True, simple=True)
 
             if self.cfg['forced_deps']:
                 for dep in self.cfg['forced_deps']:
                     # go get specific dependencies which locks them in go.mod
                     cmd = ' '.join(['go', 'get', '%s@%s' % dep])
-                    run_shell_cmd(cmd)
+                    run_cmd(cmd, log_all=True, simple=True)
 
             # note: ... (tripledot) used below is not a typo, but go wildcard pattern
             # which means: anything you can find in this directory, including all subdirectories
@@ -192,20 +192,20 @@ class GoPackage(EasyBlock):
             # see: https://stackoverflow.com/a/28031651/2047157
 
             # building and testing will add packages to go.mod
-            run_shell_cmd('go build ./...')
-            run_shell_cmd('go test ./...')
+            run_cmd('go build ./...', log_all=True, simple=True)
+            run_cmd('go test ./...', log_all=True, simple=True)
 
             # tidy up go.mod
-            run_shell_cmd('go mod tidy')
+            run_cmd('go mod tidy', log_all=True, simple=True)
 
             # build and test again, to ensure go mod tidy didn't removed anything needed
-            run_shell_cmd('go build ./...')
-            run_shell_cmd('go test ./...')
+            run_cmd('go build ./...', log_all=True, simple=True)
+            run_cmd('go test ./...', log_all=True, simple=True)
 
             self.log.warning('Include generated go.mod and go.sum via patch to ensure locked dependencies '
                              'and run this easyconfig again.')
-            run_shell_cmd('cat go.mod')
-            run_shell_cmd('cat go.sum')
+            run_cmd('cat go.mod', log_all=True, simple=True)
+            run_cmd('cat go.sum', log_all=True, simple=True)
 
         if not os.path.exists(go_sum_file) or not os.path.isfile(go_sum_file):
             raise EasyBuildError("go.sum not found! This module has no locked dependency versions.")
@@ -223,7 +223,7 @@ class GoPackage(EasyBlock):
             '-x',
             self.cfg['installopts'],
         ])
-        run_shell_cmd(cmd)
+        run_cmd(cmd, log_all=True, simple=True)
 
     def sanity_check_step(self):
         """Custom sanity check for Go package."""
