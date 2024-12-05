@@ -1,4 +1,4 @@
-# Template for ConfigureMake package from github using Autotools in GCCcore 12.3.0 
+# Template for simple ConfigureMake package in GCCcore 12.3.0 
 easyblock = 'ConfigureMake'
 
 name =
@@ -11,15 +11,11 @@ Description in 80 chars long column
 
 toolchain = {'name': 'GCCcore', 'version': '12.3.0'}
 
-github_account = 'gh_account'
-source_urls = [GITHUB_SOURCE]
-sources = ['%(version)s.tar.gz']
-checksums = [
-    '0000000000000000000000000000000000000000000000000000000000000000',
-]
+source_urls = ['http://www.domain.org/download/']
+sources = [SOURCELOWER_TAR_GZ]
+checksums = ['0000000000000000000000000000000000000000000000000000000000000000']
 
 builddependencies = [
-    ('Autotools', '20220317'),
     ('binutils', '2.40'),
     ('make', '4.4.1'),
 ]
@@ -27,8 +23,6 @@ builddependencies = [
 dependencies = [
     ('zlib', '1.2.13'),
 ]
-
-preconfigopts = "autoreconf -i -f && "
 
 sanity_check_paths = {
     'files': ['bin/%(namelower)s', 'lib/lib%(namelower)s.%s' % SHLIB_EXT],

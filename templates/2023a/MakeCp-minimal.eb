@@ -1,4 +1,4 @@
-# Template for software with Makefile lacking installation in GCCcore 11.3.0 
+# Template for software with Makefile lacking installation target in GCCcore 12.3.0 
 easyblock = 'MakeCp'
 
 name =
@@ -9,18 +9,18 @@ description = """
 Description in 80 chars long column
 """
 
-toolchain = {'name': 'GCCcore', 'version': '11.3.0'}
+toolchain = {'name': 'GCCcore', 'version': '12.3.0'}
 
 source_urls = ['http://www.domain.org/download/']
 sources = [SOURCELOWER_TAR_GZ]
 
 builddependencies = [
-    ('binutils', '2.38'),
-    ('make', '4.3'),
+    ('binutils', '2.40'),
+    ('make', '4.4.1'),
 ]
 
 dependencies = [
-    ('zlib', '1.2.12'),
+    ('zlib', '1.2.13'),
 ]
 
 _executables = ['%(namelower)s', 'other_binary']
