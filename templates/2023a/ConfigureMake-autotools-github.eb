@@ -13,7 +13,7 @@ toolchain = {'name': 'GCCcore', 'version': '12.3.0'}
 
 github_account = 'gh_account'
 source_urls = [GITHUB_SOURCE]
-sources = ['%(version)s.tar.gz']
+sources = [{'download_filename': '%(version)s.tar.gz', 'filename': SOURCE_TAR_GZ}]
 checksums = ['0000000000000000000000000000000000000000000000000000000000000000']
 
 builddependencies = [
@@ -26,7 +26,7 @@ dependencies = [
     ('zlib', '1.2.13'),
 ]
 
-preconfigopts = "autoreconf -i -f && "
+preconfigopts = "autoreconf -f -i && "
 
 sanity_check_paths = {
     'files': ['bin/%(namelower)s', 'lib/lib%(namelower)s.%s' % SHLIB_EXT],
